@@ -9,8 +9,8 @@ function App() {
 
   return (
     <div className="wrapper">
-      <Signin/>
-      {/* <Signup/> */}
+      {/* <Signin/> */}
+      <Signup/>
     </div>
   )
 }

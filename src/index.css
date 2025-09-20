@@ -37,8 +37,6 @@
     --color-incorrect-color: #f06272;
 }
 
-
-
 @layer base {
     * {
         @apply select-none;
@@ -51,22 +49,17 @@
         @apply min-h-screen bg-[url("./assets/background.jpg")] bg-cover bg-left;
     }
     form {
-        @apply   w-[min(100%,400px)] p-5 mb-13 mt-5 flex flex-col justify-center items-center ;
+        @apply w-[min(100%,400px)] p-5 mb-13 mt-5 flex flex-col justify-center items-center;
     }
-    input {
-        @apply bg-input-color rounded-l-lg text-end px-6 outline-0 w-full placeholder:opacity-[.8] placeholder:text-text-color;
-    }
+
     h1 {
-        @apply text-5xl font-bold ;
+        @apply text-5xl font-bold;
     }
-    a{
-      @apply text-accent-color duration-100 ease-in-out hover:font-bold 
+    a {
+        @apply text-accent-color duration-100 ease-in-out hover:font-bold;
     }
-    p{
-      @apply text-text-color
-    }
-    label{
-      @apply duration-200 ease-in
+    p {
+        @apply text-text-color;
     }
 }
 
@@ -74,34 +67,38 @@
     .wrapper {
         @apply font-vazir bg-base-color min-h-screen w-[min(100%,600px)] lg:w-[max(40%,600px)] flex flex-col items-center justify-center sm:rounded-l-3xl box-border;
     }
-    
+
     .input-con {
         @apply bg-gradient-to-r from-input-color  to-text-color flex w-full box-border justify-center duration-150 hover:border-text-color overflow-hidden border-[2px] rounded-lg  border-base-color focus-within:border-text-color;
     }
-    .input-con:has(input:focus) > label{
-      @apply bg-text-color
+    .input-con:has(input:focus) > label {
+        @apply bg-text-color;
     }
     .input-con label {
-        @apply bg-accent-color  p-4 box-border flex shrink-0 justify-center items-center   ;
+        @apply bg-accent-color  p-4 box-border flex shrink-0 justify-center items-center;
     }
     .input-con label i {
         @apply text-base-color text-lg;
     }
-    .btn{
-      @apply bg-accent-color p-[0.55em_4em] rounded-3xl mt-5 duration-200 ease-in-out cursor-pointer hover:bg-text-color text-base-color font-bold
-
+    .input {
+        @apply bg-input-color rounded-l-lg text-end px-6 outline-0 w-full placeholder:opacity-[.8] placeholder:text-text-color;
     }
-    .wrapper form .incorrect label{
-      @apply bg-incorrect-color
+    .label {
+        @apply duration-200 ease-in;
     }
-    .wrapper form .incorrect{
-      @apply border-incorrect-color 
+    .btn {
+        @apply bg-accent-color p-[0.55em_4em] rounded-3xl mt-5 duration-200 ease-in-out cursor-pointer hover:bg-text-color text-base-color font-bold;
     }
-    .error{
-      @apply text-[12px] pr-13 text-incorrect-color font-bold
+    .wrapper form .incorrect label {
+        @apply bg-incorrect-color;
     }
-    .con{
-      @apply w-full flex flex-col h-[70px] p-0;
+    .wrapper form .incorrect {
+        @apply border-incorrect-color;
     }
-    
+    .error {
+        @apply text-[12px] pr-13 text-incorrect-color font-bold;
+    }
+    .con {
+        @apply w-full flex flex-col h-[70px] p-0;
+    }
 }

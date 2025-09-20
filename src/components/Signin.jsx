@@ -1,47 +1,69 @@
-import { Formik } from 'formik';
 import React from 'react';
-import * as Yup from 'yup'
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import FormikControl from './Formik/FormikControl';
 
+const initialValues = {
+    email: '',
+    password: '',
+};
 
+const onSubmit = (values) => {
+    console.log(values);
+};
+
+const LoginSchema = Yup.object({
+    email: Yup.string()
+        .required('این فیلد اجباری است')
+        .matches(/^\S+@\S+\.\S+$/, 'فرمت ایمیل صحیح نیست'),
+    password: Yup.string()
+        .required('این فیلد اجباری است')
+        .min(8, 'حداقل 8 کاراکتر وارد کنید')
+        .matches(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/,
+            'فرمت رمز عبور [A-Z] [a-z] [0-9] [#?!@$%^&*-.] '
+        ),
+});
 
 const Signin = () => {
     return (
         <>
             <h1>ورود</h1>
-            
-                
-                <form action="">
-                    <div className="con">
-                        <div className="input-con incorrect">
-                            <label htmlFor="">
-                                <i className="bx bx-user"></i>
-                            </label>
-                            <input
-                                name="username"
+            <Formik
+                initialValues={initialValues}
+                onSubmit={onSubmit}
+                validationSchema={LoginSchema}
+            >
+                {(Formik) => {
+                    console.log(Formik);
+
+                    return (
+                        <Form>
+                            <FormikControl
+                                formik={Formik}
+                                control="input"
+                                name="email"
                                 type="text"
-                                dir="ltr"
-                                placeholder="نام کاربری"
+                                icon="bx bxs-user"
+                                label="ایمیل"
+                                mode="input"
                             />
-                        </div>
-                        <small className="error">نام کاربری اشتباه است</small>
-                    </div>
-                    <div className="con">
-                        <div className="input-con">
-                            <label htmlFor="">
-                                <i className="bx bx-lock"></i>
-                            </label>
-                            <input
+                            <FormikControl
+                                formik={Formik}
+                                control="input"
                                 name="password"
-                                type="text"
-                                dir="ltr"
-                                placeholder="رمز عبور"
+                                type="password"
+                                icon="bx bxs-lock-alt"
+                                label="رمز عبور"
                             />
-                        </div>
-                        <small className="error">error</small>
-                    </div>
-                    <button className="btn btn-signin">ورود</button>
-                </form>
-           
+
+                            <button type="submit" className="btn btn-signin">
+                                ورود
+                            </button>
+                        </Form>
+                    );
+                }}
+            </Formik>
             <p>
                 حساب ندارید ؟ <a href="singup.html">ثبت نام</a>
             </p>
