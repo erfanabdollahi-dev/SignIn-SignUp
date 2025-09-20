@@ -15,10 +15,20 @@ const initialValues = {
     cPassword: '',
     auth_mode: 'mobile',
     birthDate: '',
+    image: null,
 };
 
 const onSubmit = (values) => {
     console.log(values);
+    let formData = new FormData();
+    formData.append('username', values.username);
+    formData.append('mobile', values.mobile);
+    formData.append('email', values.email);
+    formData.append('password', values.password);
+    formData.append('birthDate', values.birthDate);
+    formData.append('image', values.image);
+
+    console.log(formData);
 };
 
 const authModes = [
@@ -55,10 +65,34 @@ const LoginSchema = Yup.object({
         .required('این فیلد اجباری است'),
     username: Yup.string()
         .required('این فیلد اجباری است')
-        .matches(/^[0-9A-Za-z]{6,16}$/, 'فرمت نام کاربری 0-9 A-Z a-z '),
+        .matches(
+            /^[0-9A-Za-z]{6,16}$/,
+            'فرمت نام کاربری 0-9 A-Z a-z و 6 الا 16 کاراکتر'
+        ),
     birthDate: Yup.string()
         .required('تاریخ تولد الزامی است')
         .matches(/^\d{4}\/\d{2}\/\d{2}$/, 'فرمت تاریخ باید YYYY/MM/DD باشد'),
+    image: Yup.mixed()
+        .required('این فیلد اجباری است')
+        .test(
+            'filesize',
+            'سایز فایل نمیتواند بیش از 1 مگابایت باشد',
+            (value) => value && value.size <= 1000 * 1024
+        )
+        .test(
+            'fileType',
+            'فایل باید از نوع تصویر باشد (jpg, jpeg, png, gif)',
+            (value) => {
+                !value ||
+                    (value &&
+                        [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                            'image/jpg',
+                        ].includes(value.type));
+            }
+        ),
 });
 
 const Signin = () => {
@@ -184,6 +218,13 @@ const Signin = () => {
                                     component={FieldError}
                                 />
                             </div>
+                            <FormikControl
+                                formik={Formik}
+                                control="file"
+                                name="image"
+                                icon="bx bxs-file-image"
+                                label="تصویر کاربر"
+                            />
                             <button type="submit" className="btn btn-signin">
                                 ثبت نام
                             </button>
