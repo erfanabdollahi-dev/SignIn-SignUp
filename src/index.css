@@ -1,0 +1,107 @@
+@import 'tailwindcss';
+@font-face {
+    font-family: 'vazir';
+    src: url('./assets/fonts/Vazir-Thin.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'vazir';
+    src: url('./assets/fonts/Vazir.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'vazir';
+    src: url('./assets/fonts/Vazir-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'vazir';
+    src: url('./assets/fonts/Vazir-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --font-vazir: 'vazir', sans-serif;
+    --color-accent-color: #8672ff;
+    --color-base-color: white;
+    --color-text-color: #2e2b41;
+    --color-input-color: #e2dbff;
+    --color-incorrect-color: #f06272;
+}
+
+
+
+@layer base {
+    * {
+        @apply select-none;
+    }
+    html,
+    body {
+        @apply h-full;
+    }
+    body {
+        @apply min-h-screen bg-[url("./assets/background.jpg")] bg-cover bg-left;
+    }
+    form {
+        @apply   w-[min(100%,400px)] p-5 mb-13 mt-5 flex flex-col justify-center items-center ;
+    }
+    input {
+        @apply bg-input-color rounded-l-lg text-end px-6 outline-0 w-full placeholder:opacity-[.8] placeholder:text-text-color;
+    }
+    h1 {
+        @apply text-5xl font-bold ;
+    }
+    a{
+      @apply text-accent-color duration-100 ease-in-out hover:font-bold 
+    }
+    p{
+      @apply text-text-color
+    }
+    label{
+      @apply duration-200 ease-in
+    }
+}
+
+@layer components {
+    .wrapper {
+        @apply font-vazir bg-base-color min-h-screen w-[min(100%,600px)] lg:w-[max(40%,600px)] flex flex-col items-center justify-center sm:rounded-l-3xl box-border;
+    }
+    
+    .input-con {
+        @apply bg-gradient-to-r from-input-color  to-text-color flex w-full box-border justify-center duration-150 hover:border-text-color overflow-hidden border-[2px] rounded-lg  border-base-color focus-within:border-text-color;
+    }
+    .input-con:has(input:focus) > label{
+      @apply bg-text-color
+    }
+    .input-con label {
+        @apply bg-accent-color  p-4 box-border flex shrink-0 justify-center items-center   ;
+    }
+    .input-con label i {
+        @apply text-base-color text-lg;
+    }
+    .btn{
+      @apply bg-accent-color p-[0.55em_4em] rounded-3xl mt-5 duration-200 ease-in-out cursor-pointer hover:bg-text-color text-base-color font-bold
+
+    }
+    .wrapper form .incorrect label{
+      @apply bg-incorrect-color
+    }
+    .wrapper form .incorrect{
+      @apply border-incorrect-color 
+    }
+    .error{
+      @apply text-[12px] pr-13 text-incorrect-color font-bold
+    }
+    .con{
+      @apply w-full flex flex-col h-[70px] p-0;
+    }
+    
+}
