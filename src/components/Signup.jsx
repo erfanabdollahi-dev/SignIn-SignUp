@@ -1,7 +1,11 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
+import { ErrorMessage, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import FormikControl from './Formik/FormikControl';
+import DatePicker from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+import FieldError from './Formik/FieldError';
 
 const initialValues = {
     username: '',
@@ -10,6 +14,7 @@ const initialValues = {
     password: '',
     cPassword: '',
     auth_mode: 'mobile',
+    birthDate: '',
 };
 
 const onSubmit = (values) => {
@@ -24,14 +29,18 @@ const authModes = [
 const LoginSchema = Yup.object({
     email: Yup.string().when('auth_mode', {
         is: 'email',
-        then: (schema)=> schema
-            .required('این فیلد اجباری است')
-            .matches(/^\S+@\S+\.\S+$/, 'فرمت ایمیل صحیح نیست'),
+        then: (schema) =>
+            schema
+                .required('این فیلد اجباری است')
+                .matches(/^\S+@\S+\.\S+$/, 'فرمت ایمیل صحیح نیست'),
     }),
 
     mobile: Yup.string().when('auth_mode', {
         is: 'mobile',
-        then: (schema)=> schema.required('این فیلد اجباری است').matches(/^09\d{9}$/, "شماره موبایل معتبر نیست"),
+        then: (schema) =>
+            schema
+                .required('این فیلد اجباری است')
+                .matches(/^09\d{9}$/, 'شماره موبایل معتبر نیست'),
     }),
 
     password: Yup.string()
@@ -41,13 +50,15 @@ const LoginSchema = Yup.object({
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/,
             'فرمت رمز عبور [A-Z] [a-z] [0-9] [#?!@$%^&*-.] '
         ),
-    cPassword: Yup.string().oneOf(
-        [Yup.ref('password')],
-        'با رمز عبور مطابقت ندارد'
-    ),
+    cPassword: Yup.string()
+        .oneOf([Yup.ref('password')], 'با رمز عبور مطابقت ندارد')
+        .required('این فیلد اجباری است'),
     username: Yup.string()
         .required('این فیلد اجباری است')
         .matches(/^[0-9A-Za-z]{6,16}$/, 'فرمت نام کاربری 0-9 A-Z a-z '),
+    birthDate: Yup.string()
+        .required('تاریخ تولد الزامی است')
+        .matches(/^\d{4}\/\d{2}\/\d{2}$/, 'فرمت تاریخ باید YYYY/MM/DD باشد'),
 });
 
 const Signin = () => {
@@ -117,14 +128,65 @@ const Signin = () => {
                             <FormikControl
                                 formik={Formik}
                                 control="input"
-                                name="password"
+                                name="cPassword"
                                 type="password"
                                 icon="bx bxs-lock-alt"
                                 label="تکرار رمز عبور"
                                 mode="input"
                             />
-
-                            <button type='submit' className="btn btn-signin">ثبت نام</button>
+                            <div className="con w-full">
+                                <div
+                                    className={`input-con ${
+                                        Formik.errors.birthDate &&
+                                        Formik.touched.birthDate
+                                            ? 'incorrect'
+                                            : null
+                                    }`}
+                                >
+                                    <label
+                                        htmlFor="date"
+                                        className="label flex justify-between w-fit"
+                                    >
+                                        <i className="bx bxs-calendar"></i>
+                                    </label>
+                                    <DatePicker
+                                        calendar={persian}
+                                        locale={persian_fa}
+                                        calendarPosition="top"
+                                        placeholder="تاریخ تولد"
+                                        id="date"
+                                        value={Formik.values.birthDate || null}
+                                        onChange={(date, e) => {
+                                            if (date) {
+                                                Formik.setFieldValue(
+                                                    'birthDate',
+                                                    `${date.year}/${String(
+                                                        date.month.number
+                                                    ).padStart(
+                                                        2,
+                                                        '0'
+                                                    )}/${String(
+                                                        date.day
+                                                    ).padStart(2, '0')}`
+                                                );
+                                            } else {
+                                                Formik.setFieldValue(
+                                                    'birthDate',
+                                                    ''
+                                                );
+                                            }
+                                        }}
+                                        inputClass="bg-input-color  h-[50px] rounded-l-lg px-6  outline-0 w-full placeholder:opacity-[.8] w-full placeholder:text-text-color"
+                                    />
+                                </div>
+                                <ErrorMessage
+                                    name="birthDate"
+                                    component={FieldError}
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-signin">
+                                ثبت نام
+                            </button>
                         </Form>
                     );
                 }}
