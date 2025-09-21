@@ -2,32 +2,37 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import FormikControl from './Formik/FormikControl';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 const initialValues = {
-    email: '',
+    username: '',
     password: '',
 };
-
-const onSubmit = (values) => {
-    console.log(values);
-};
-
 const LoginSchema = Yup.object({
-    email: Yup.string()
-        .required('این فیلد اجباری است')
-        .matches(/^\S+@\S+\.\S+$/, 'فرمت ایمیل صحیح نیست'),
-    password: Yup.string()
-        .required('این فیلد اجباری است')
-        .min(8, 'حداقل 8 کاراکتر وارد کنید')
-        .matches(
-            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/,
-            'فرمت رمز عبور [A-Z] [a-z] [0-9] [#?!@$%^&*-.] '
-        ),
-});
+    username: Yup.string().required('این فیلد اجباری است'),
 
+    password: Yup.string().required('این فیلد اجباری است'),
+});
 const Signin = () => {
+    const navigate = useNavigate();
+
+    const onSubmit = (values) => {
+        console.log(values);
+        axios
+            .post('http://127.0.0.1:8000/api/login/', values)
+            .then((res) => {
+                console.log(res);
+                localStorage.setItem('accessToken', res.data.access);
+                localStorage.setItem('username', values['username']);
+                localStorage.setItem('refreshToken', res.data.refresh);
+                navigate('/profile');
+            })
+            .catch((err) => console.error(err.message));
+    };
+ 
     return (
-        <>
+        <div className="wrapper">
             <h1>ورود</h1>
             <Formik
                 initialValues={initialValues}
@@ -42,10 +47,10 @@ const Signin = () => {
                             <FormikControl
                                 formik={Formik}
                                 control="input"
-                                name="email"
+                                name="username"
                                 type="text"
                                 icon="bx bxs-user"
-                                label="ایمیل"
+                                label="نام کاربری"
                                 mode="input"
                             />
                             <FormikControl
@@ -55,6 +60,7 @@ const Signin = () => {
                                 type="password"
                                 icon="bx bxs-lock-alt"
                                 label="رمز عبور"
+                                mode="input"
                             />
 
                             <button type="submit" className="btn btn-signin">
@@ -65,9 +71,9 @@ const Signin = () => {
                 }}
             </Formik>
             <p>
-                حساب ندارید ؟ <a href="singup.html">ثبت نام</a>
+                حساب ندارید ؟ <Link to="/signup">ثبت نام</Link>
             </p>
-        </>
+        </div>
     );
 };
 

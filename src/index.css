@@ -104,4 +104,14 @@
     .rmdp-container {
         @apply w-full
     }
+    .profile-data{
+        @apply w-[min(100%,400px)] border-[1px] border-text-color/50 mt-10 bg-input-color/40 rounded-3xl py-20  p-5 mb-5  flex flex-col justify-center items-center
+    }
+    .data{
+        @apply w-full gap-2 p-2  px-10 flex items-center justify-between text-text-color text-lg 
+    }
+    .data-label{
+        @apply text-accent-color
+    }
+
 }
