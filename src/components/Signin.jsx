@@ -20,7 +20,7 @@ const Signin = () => {
     const onSubmit = (values) => {
         console.log(values);
         axios
-            .post('http://127.0.0.1:8000/api/login/', values)
+            .post('https://dots.liara.run/api/login/', values)
             .then((res) => {
                 console.log(res);
                 localStorage.setItem('accessToken', res.data.access);
