@@ -57,19 +57,19 @@ const Profile = () => {
                     </div>
                     <div className="data">
                         <h3 className="data-label">نام کاربری :</h3>
-                        <h3> erfan</h3>
+                        <h3> {user.username || '---'}</h3>
                     </div>
                     <div className="data">
                         <h3 className="data-label"> ایمیل :</h3>
-                        <h3> erfan@gamil.com</h3>
+                        <h3>{user.email || '---'}</h3>
                     </div>
                     <div className="data">
                         <h3 className="data-label"> شماره موبایل :</h3>
-                        <h3> 09012252215</h3>
+                        <h3> {user.phone || '---'}</h3>
                     </div>
                     <div className="data">
                         <h3 className="data-label"> تاریخ تولد :</h3>
-                        <h3> 1387/12/11</h3>
+                        <h3>{user.birthDate || '---'}</h3>
                     </div>
                 </div>
             ) : (
